@@ -13,8 +13,15 @@ const getOrderFromDB = async () => {
   return result;
 };
 
+// search order by email
+const searchProductByEmail = async (email: string) => {
+  const result = await Order.find({ email: email });
+  return result;
+};
+
 // export
 export const OrderServices = {
   createOrderIntoDB,
   getOrderFromDB,
+  searchProductByEmail,
 };
