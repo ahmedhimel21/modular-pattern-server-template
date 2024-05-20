@@ -19,12 +19,24 @@ const getSingleProductFromDB = async (id: string) => {
   return result;
 };
 
-// update document
+// update product
 const updateProductFromDB = async (id: string) => {
   const result = await Product.updateOne(
     { _id: id },
     { $inc: { "inventory.quantity": -1 } }
   );
+  return result;
+};
+
+// delete product
+const deleteProductFromDB = async (id: string) => {
+  const result = await Product.deleteOne({ _id: id });
+  return result;
+};
+
+// search by product name
+const searchProductFromDB = async (productName: string) => {
+  const result = await Product.find({ $text: { $search: productName } });
   return result;
 };
 
@@ -34,4 +46,6 @@ export const ProductServices = {
   getProductsFromDB,
   getSingleProductFromDB,
   updateProductFromDB,
+  deleteProductFromDB,
+  searchProductFromDB,
 };
