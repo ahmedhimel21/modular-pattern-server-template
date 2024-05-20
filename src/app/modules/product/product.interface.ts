@@ -10,6 +10,11 @@ export type TInventory = {
   inStock: boolean;
 };
 
+// custom error
+export type TCustomError = {
+  message: string;
+};
+
 // product type
 export type TProduct = {
   name: string;

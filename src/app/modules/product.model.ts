@@ -1,16 +1,22 @@
 import { model, Schema } from "mongoose";
 
 // TVariants schema
-const variantSchema = new Schema({
-  type: { type: String, required: true },
-  value: { type: String, required: true },
-});
+const variantSchema = new Schema(
+  {
+    type: { type: String, required: true },
+    value: { type: String, required: true },
+  },
+  { _id: false }
+);
 
 //  TInventory schema
-const inventorySchema = new Schema({
-  quantity: { type: Number, required: true },
-  inStock: { type: Boolean, required: true },
-});
+const inventorySchema = new Schema(
+  {
+    quantity: { type: Number, required: true },
+    inStock: { type: Boolean, required: true },
+  },
+  { _id: false }
+);
 
 // TProduct schema
 const productSchema = new Schema({
