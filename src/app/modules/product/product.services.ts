@@ -19,9 +19,19 @@ const getSingleProductFromDB = async (id: string) => {
   return result;
 };
 
+// update document
+const updateProductFromDB = async (id: string) => {
+  const result = await Product.updateOne(
+    { _id: id },
+    { $inc: { "inventory.quantity": -1 } }
+  );
+  return result;
+};
+
 // export
 export const ProductServices = {
   createProductIntoDB,
   getProductsFromDB,
   getSingleProductFromDB,
+  updateProductFromDB,
 };
