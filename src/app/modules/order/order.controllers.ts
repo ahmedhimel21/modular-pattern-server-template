@@ -21,7 +21,26 @@ const createOrder = async (req: Request, res: Response) => {
   }
 };
 
+// get order data
+const getOrder = async (req: Request, res: Response) => {
+  try {
+    const result = await OrderServices.getOrderFromDB();
+    res.status(200).json({
+      success: true,
+      message: "Orders fetched successfully!",
+      data: result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: "Can't fetched order!",
+      data: (error as TCustomError).message,
+    });
+  }
+};
+
 // export
 export const OrderControllers = {
   createOrder,
+  getOrder,
 };
