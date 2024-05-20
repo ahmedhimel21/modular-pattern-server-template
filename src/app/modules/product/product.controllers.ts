@@ -33,7 +33,26 @@ const getProducts = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(400).json({
       success: false,
-      message: "Can't create product",
+      message: "Can't retrieved products",
+      data: (error as TCustomError).message,
+    });
+  }
+};
+
+// get single product
+const getSingleProduct = async (req: Request, res: Response) => {
+  try {
+    const { productId } = req.params;
+    const result = await ProductServices.getSingleProductFromDB(productId);
+    res.status(200).json({
+      success: true,
+      message: "Product fetched successfully!",
+      data: result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: "Can't retrieved products",
       data: (error as TCustomError).message,
     });
   }
@@ -43,4 +62,5 @@ const getProducts = async (req: Request, res: Response) => {
 export const ProductControllers = {
   createProduct,
   getProducts,
+  getSingleProduct,
 };
