@@ -21,7 +21,26 @@ const createProduct = async (req: Request, res: Response) => {
   }
 };
 
+// get products
+const getProducts = async (req: Request, res: Response) => {
+  try {
+    const result = await ProductServices.getProductsFromDB();
+    res.status(200).json({
+      success: true,
+      message: "Products fetched successfully!",
+      data: result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: "Can't create product",
+      data: (error as TCustomError).message,
+    });
+  }
+};
+
 // export
 export const ProductControllers = {
   createProduct,
+  getProducts,
 };
