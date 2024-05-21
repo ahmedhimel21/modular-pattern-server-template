@@ -1,8 +1,8 @@
-#ProductManagement Server
+# ProductManagement Server
 Welcome to the backend repository for ProductManagement, a tutorial project developed as part of the "Level 2 Web Development Course" offered by Programming Hero.
 This repository contains the backend codebase responsible for handling server-side logic, database management, and communication between different system components.
 
-#Installation and Setup
+# Installation and Setup
 1. Clone this repository: git clone <repository_url>
 2. Install dependencies: npm install
 3. Set up the environment variables by creating a .env file and filling PORT=2000, DATABASE_URL=mongoDbDatabaseUrl
