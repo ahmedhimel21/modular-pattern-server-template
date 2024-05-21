@@ -11,7 +11,7 @@ const createProduct = async (req: Request, res: Response) => {
     const { error, value } = productValidationSchema.validate(product);
 
     if (error) {
-      throw new Error(error);
+      throw error as unknown;
     }
 
     const result = await ProductServices.createProductIntoDB(value);

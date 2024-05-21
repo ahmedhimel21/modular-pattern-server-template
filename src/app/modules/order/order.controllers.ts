@@ -11,7 +11,7 @@ const createOrder = async (req: Request, res: Response) => {
     const { error, value } = orderValidationSchema.validate(order);
 
     if (error) {
-      throw new Error(error);
+      throw error as unknown;
     }
 
     const result = await OrderServices.createOrderIntoDB(value);
