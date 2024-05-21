@@ -15,7 +15,6 @@ app.use("/api/products", ProductRoutes);
 app.use("/api/orders", OrderRoutes);
 
 app.get("/", (req: Request, res: Response) => {
-  console.log(req.query.searchTerm);
   res.send("Product management server is running");
 });
 

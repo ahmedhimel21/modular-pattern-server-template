@@ -8,14 +8,12 @@ const createOrderIntoDB = async (order: TOrder) => {
 };
 
 // get order data
-const getOrderFromDB = async () => {
+const getOrderFromDB = async (email: string) => {
+  if (email) {
+    const result = await Order.find({ email: email });
+    return result;
+  }
   const result = await Order.find();
-  return result;
-};
-
-// search order by email
-const searchProductByEmail = async (email: string) => {
-  const result = await Order.find({ email: email });
   return result;
 };
 
@@ -23,5 +21,4 @@ const searchProductByEmail = async (email: string) => {
 export const OrderServices = {
   createOrderIntoDB,
   getOrderFromDB,
-  searchProductByEmail,
 };
