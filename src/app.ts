@@ -14,16 +14,16 @@ app.use("/api/products", ProductRoutes);
 // orders routes middleware
 app.use("/api/orders", OrderRoutes);
 
+app.get("/", (req: Request, res: Response) => {
+  res.send("Product management server is running");
+});
+
 // not found route
 app.all("*", (req: Request, res: Response) => {
   res.status(400).json({
     success: false,
     message: "Route not found",
   });
-});
-
-app.get("/", (req: Request, res: Response) => {
-  res.send("Product management server is running");
 });
 
 export default app;
