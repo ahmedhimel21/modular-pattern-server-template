@@ -1,12 +1,20 @@
 import { Request, Response } from "express";
 import { ProductServices } from "./product.services";
 import { TCustomError } from "./product.interface";
+import productValidationSchema from "./product.validation";
 
 // create product
 const createProduct = async (req: Request, res: Response) => {
   try {
     const { product } = req.body;
-    const result = await ProductServices.createProductIntoDB(product);
+
+    const { error, value } = productValidationSchema.validate(product);
+
+    if (error) {
+      throw new Error(error);
+    }
+
+    const result = await ProductServices.createProductIntoDB(value);
     res.status(200).json({
       success: true,
       message: "Product created successfully",
@@ -16,7 +24,7 @@ const createProduct = async (req: Request, res: Response) => {
     res.status(400).json({
       success: false,
       message: "Can't create product",
-      data: (error as TCustomError).message,
+      error: (error as TCustomError).message,
     });
   }
 };
@@ -25,6 +33,9 @@ const createProduct = async (req: Request, res: Response) => {
 const getProducts = async (req: Request, res: Response) => {
   try {
     const searchQuery = req.query.searchTerm;
+    if (!searchQuery) {
+      throw new Error("Product not found!");
+    }
     const result = await ProductServices.getProductsFromDB(
       searchQuery as string
     );
@@ -39,7 +50,7 @@ const getProducts = async (req: Request, res: Response) => {
     res.status(400).json({
       success: false,
       message: "Can't retrieved products",
-      data: (error as TCustomError).message,
+      error: (error as TCustomError).message,
     });
   }
 };
@@ -58,7 +69,7 @@ const getSingleProduct = async (req: Request, res: Response) => {
     res.status(400).json({
       success: false,
       message: "Can't retrieved products",
-      data: (error as TCustomError).message,
+      error: (error as TCustomError).message,
     });
   }
 };
@@ -77,7 +88,7 @@ const updateProduct = async (req: Request, res: Response) => {
     res.status(400).json({
       success: false,
       message: "Unable to update product!",
-      data: (error as TCustomError).message,
+      error: (error as TCustomError).message,
     });
   }
 };
@@ -96,7 +107,7 @@ const deleteProduct = async (req: Request, res: Response) => {
     res.status(400).json({
       success: false,
       message: "Unable to delete product!",
-      data: (error as TCustomError).message,
+      error: (error as TCustomError).message,
     });
   }
 };

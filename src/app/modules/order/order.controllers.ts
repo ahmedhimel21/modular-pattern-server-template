@@ -1,12 +1,20 @@
 import { Request, Response } from "express";
 import { OrderServices } from "./order.services";
 import { TCustomError } from "../product/product.interface";
+import orderValidationSchema from "./order.validation";
 
 //create order
 const createOrder = async (req: Request, res: Response) => {
   try {
     const { order } = req.body;
-    const result = await OrderServices.createOrderIntoDB(order);
+
+    const { error, value } = orderValidationSchema.validate(order);
+
+    if (error) {
+      throw new Error(error);
+    }
+
+    const result = await OrderServices.createOrderIntoDB(value);
     res.status(200).json({
       success: true,
       message: "Order created successfully!",
@@ -16,7 +24,7 @@ const createOrder = async (req: Request, res: Response) => {
     res.status(400).json({
       success: false,
       message: "Unable to create data",
-      data: (error as TCustomError).message,
+      error: (error as TCustomError).message,
     });
   }
 };
@@ -25,6 +33,9 @@ const createOrder = async (req: Request, res: Response) => {
 const getOrder = async (req: Request, res: Response) => {
   try {
     const searchQuery = req.query.email;
+    if (!searchQuery) {
+      throw new Error("Order not found!");
+    }
     const result = await OrderServices.getOrderFromDB(searchQuery as string);
     res.status(200).json({
       success: true,
@@ -37,7 +48,7 @@ const getOrder = async (req: Request, res: Response) => {
     res.status(400).json({
       success: false,
       message: "Can't fetched order!",
-      data: (error as TCustomError).message,
+      error: (error as TCustomError).message,
     });
   }
 };
