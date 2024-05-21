@@ -36,6 +36,10 @@ const getProducts = async (req: Request, res: Response) => {
     const result = await ProductServices.getProductsFromDB(
       searchQuery as string
     );
+    // validation
+    if (result.length === 0) {
+      throw new Error(`Can't find product for ${searchQuery}`);
+    }
     res.status(200).json({
       success: true,
       message: searchQuery

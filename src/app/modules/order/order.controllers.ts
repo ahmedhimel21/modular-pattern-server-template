@@ -33,10 +33,11 @@ const createOrder = async (req: Request, res: Response) => {
 const getOrder = async (req: Request, res: Response) => {
   try {
     const searchQuery = req.query.email;
-    if (!searchQuery) {
-      throw new Error("Order not found!");
-    }
     const result = await OrderServices.getOrderFromDB(searchQuery as string);
+    // validation
+    if (result.length === 0) {
+      throw new Error(`Can't find product for ${searchQuery}`);
+    }
     res.status(200).json({
       success: true,
       message: searchQuery
@@ -47,7 +48,7 @@ const getOrder = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(400).json({
       success: false,
-      message: "Can't fetched order!",
+      message: "Order not found!",
       error: (error as TCustomError).message,
     });
   }
