@@ -33,9 +33,6 @@ const createProduct = async (req: Request, res: Response) => {
 const getProducts = async (req: Request, res: Response) => {
   try {
     const searchQuery = req.query.searchTerm;
-    if (!searchQuery) {
-      throw new Error("Product not found!");
-    }
     const result = await ProductServices.getProductsFromDB(
       searchQuery as string
     );
@@ -60,6 +57,10 @@ const getSingleProduct = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
     const result = await ProductServices.getSingleProductFromDB(productId);
+    // validation
+    if (!result) {
+      throw new Error("Product not found");
+    }
     res.status(200).json({
       success: true,
       message: "Product fetched successfully!",
@@ -79,6 +80,10 @@ const updateProduct = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
     const result = await ProductServices.updateProductFromDB(productId);
+    // validation
+    if (!result.matchedCount) {
+      throw new Error("There is no matching product to update!");
+    }
     res.status(200).json({
       success: true,
       message: "Product updated successfully!",
@@ -98,6 +103,10 @@ const deleteProduct = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
     const result = await ProductServices.deleteProductFromDB(productId);
+    // validation
+    if (!result.deletedCount) {
+      throw new Error("There is no matching product to delete");
+    }
     res.status(200).json({
       success: true,
       message: "Product deleted successfully!",
