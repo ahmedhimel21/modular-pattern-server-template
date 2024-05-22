@@ -10,6 +10,7 @@ const createProduct = async (req: Request, res: Response) => {
 
     const { error, value } = productValidationSchema.validate(product);
 
+    // validation
     if (error) {
       throw error as unknown;
     }
